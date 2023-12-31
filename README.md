@@ -6,13 +6,14 @@ In today's fast-paced business environment, efficiently managing and organizing 
 One powerful OCR library that facilitates the extraction of text from images is EasyOCR. EasyOCR is an open-source Python library that utilizes deep learning models to accurately recognize and extract text from various languages. By integrating EasyOCR with a MySQL database, developers can streamline the process of capturing business card data and storing it in a structured and organized manner.
 
 Developer Guide
-1. Tools Install
+
+ 1. Tools Install
 Virtual code.
 Jupyter notebook.
 Python 3.11.0 or higher.
 MySQL.
 
-2. Requirement Libraries to Install
+ 2. Requirement Libraries to Install
 pip install pandas easyocr numpy Pillow opencv-python-headless os re sqlalchemy mysql-connector-python streamlit
 
  3.Import Libraries
