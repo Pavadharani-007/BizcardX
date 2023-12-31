@@ -16,22 +16,22 @@ MySQL.
 pip install pandas easyocr numpy Pillow opencv-python-headless os re sqlalchemy mysql-connector-python streamlit
 
 3.Import Libraries
-Scanning library
-import easyocr # (Optical Character Recognition)
-import numpy as np
-from PIL
-from PIL import Image, ImageDraw
-import cv2
-import os
-import re
-Data frame libraries
-import pandas as pd
-Database Library
-import sqlalchemy
-import mysql.connector
-from sqlalchemy import create_engine, inspect
-Dashboard library
-import streamlit as st
+ Scanning library
+ import easyocr # (Optical Character Recognition)
+ import numpy as np
+ from PIL
+ from PIL import Image, ImageDraw
+ import cv2
+ import os
+ import re
+ Data frame libraries
+ import pandas as pd
+ Database Library
+ import sqlalchemy
+ import mysql.connector
+ from sqlalchemy import create_engine, inspect
+ Dashboard library
+ import streamlit as st
 
 4. E T L Process
 a) Extract data
@@ -42,6 +42,7 @@ c) Load data
 After the transformation process, the data is stored in the MySQL database.
 
 User Guide
+
 Step 1. Data collection zone
 Click the 'Browse Files' button and select an image
 Step 2. Data upload
