@@ -9,7 +9,7 @@ import os
 import matplotlib.pyplot as plt
 import re
 
-icon = Image.open("C:\\Users\\saran\\.vscode\.venv\\business card.jpg")
+icon = Image.open("C:\\Users\\pavadharani\\.vscode\.venv\\business card.jpg")
  
 # SETTING PAGE CONFIGURATIONS
 st.set_page_config(
@@ -64,7 +64,7 @@ if selected == "Home":
 
     overview = "Streamlit application that allows users to upload an image of a business card and extract relevant information from it using easyOCR."
     st.markdown(f":black_large_square: **Overview** : {overview}")
-    st.image(Image.open("C:\\Users\\saran\\.vscode\\.venv\\visiting.jpg"),width = 400)
+    st.image(Image.open("C:\\Users\\pavadharani\\.vscode\\.venv\\visiting.jpg"),width = 400)
 
 #Initialize df as None
 df= None    
