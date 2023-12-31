@@ -17,22 +17,22 @@ MySQL.
 pip install pandas easyocr numpy Pillow opencv-python-headless os re sqlalchemy mysql-connector-python streamlit
 
 3.Import Libraries
- Scanning library
- import easyocr # (Optical Character Recognition)
- import numpy as np
- from PIL
- from PIL import Image, ImageDraw
- import cv2
- import os
- import re
- Data frame libraries
- import pandas as pd
- Database Library
- import sqlalchemy
- import mysql.connector
- from sqlalchemy import create_engine, inspect
- Dashboard library
- import streamlit as st
+    Scanning library
+    import easyocr # (Optical Character Recognition)
+    import numpy as np
+    from PIL
+    from PIL import Image, ImageDraw
+    import cv2
+    import os
+    import re
+    Data frame libraries
+    import pandas as pd
+    Database Library
+    import sqlalchemy
+    import mysql.connector
+    from sqlalchemy import create_engine, inspect
+    Dashboard library
+    import streamlit as st
 
 4.E T L Process
 
