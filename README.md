@@ -7,16 +7,16 @@ One powerful OCR library that facilitates the extraction of text from images is 
 
 Developer Guide
 
- 1. Tools Install
+1. Tools Install
 Virtual code.
 Jupyter notebook.
 Python 3.11.0 or higher.
 MySQL.
 
- 2. Requirement Libraries to Install
+2. Requirement Libraries to Install
 pip install pandas easyocr numpy Pillow opencv-python-headless os re sqlalchemy mysql-connector-python streamlit
 
- 3.Import Libraries
+3.Import Libraries
  Scanning library
  import easyocr # (Optical Character Recognition)
  import numpy as np
@@ -34,7 +34,7 @@ pip install pandas easyocr numpy Pillow opencv-python-headless os re sqlalchemy 
  Dashboard library
  import streamlit as st
 
-4. E T L Process
+4.E T L Process
 
 a) Extract data
 Extract relevant information from business cards by using the easyOCR library
