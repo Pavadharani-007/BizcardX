@@ -1,22 +1,24 @@
 import pandas as pd
 import streamlit as st
+from streamlit_option_menu import option_menu
 import easyocr
-import mysql
+import mysql.connector
 from streamlit_option_menu import option_menu
 from PIL import Image
 import cv2
 import os
 import matplotlib.pyplot as plt
 import re
-
-icon = Image.open("C:\\Users\\pavadharani\\.vscode\.venv\\business card.jpg")
+icon = Image.open("C:\\Users\\HP\Desktop\\vs code\\Bizcard\\images\\1.png")
  
 # SETTING PAGE CONFIGURATIONS
 st.set_page_config(
     page_title=" Extracting Business Card Data with OCR ",
     page_icon=icon,
     layout="wide",
-    initial_sidebar_state="expanded")
+    initial_sidebar_state="expanded")  
+
+
 
 
 st.title(':violet[Extracting Business Card Data with OCR]') 
@@ -32,22 +34,18 @@ with st.sidebar:
                                    "container" : {"max-width": "2000px"},
                                    "nav-link-selected": {"background-color": "#D3D3D3"},
                                    "nav": {"background-color": "#D3D3D3"}})
-
 # INITIALIZING THE EasyOCR READER
 reader = easyocr.Reader(['en'])
 
 # CONNECTING WITH MYSQL DATABASE
-mydb = pymysql.connect(
-     host="localhost",
-     user="root",
-     password="12345",
-)
-cursor=mydb.cursor()
-cursor.execute("CREATE DATABASE  if not exists Business_Cards")
-cursor.execute("use Business_Cards")
+
+mydb = mysql.connector.connect(host="localhost",user="root",password="pava12345S")
+mycursor=mydb.cursor(buffered=True)
+mycursor.execute("CREATE DATABASE  if not exists Business_Cards")
+mycursor.execute("use Business_Cards")
 
 # TABLE CREATION
-cursor.execute('''CREATE TABLE IF NOT EXISTS Business_Cards
+mycursor.execute('''CREATE TABLE IF NOT EXISTS Business_Cards
                    (id INTEGER PRIMARY KEY AUTO_INCREMENT,
                     company_name VARCHAR(50),card_holder VARCHAR(50),
                     designation VARCHAR(50),mobile_number VARCHAR(50),
@@ -64,7 +62,7 @@ if selected == "Home":
 
     overview = "Streamlit application that allows users to upload an image of a business card and extract relevant information from it using easyOCR."
     st.markdown(f":black_large_square: **Overview** : {overview}")
-    st.image(Image.open("C:\\Users\\pavadharani\\.vscode\\.venv\\visiting.jpg"),width = 400)
+    st.image(Image.open("C:\\Users\\HP\\Desktop\\vs code\\Bizcard\\images\\6.png"),width = 400)
 
 #Initialize df as None
 df= None    
@@ -218,23 +216,19 @@ if selected == "Upload and Extract and Store":
         if df is not None and not df.empty:
             try:
                 # CONNECTING WITH MYSQL DATABASE
-                mydb = pymysql.connect(
-                    host="localhost",
-                    user="root",
-                    password="12345",
-)
-                cursor=mydb.cursor()
-                cursor.execute("use Business_Cards")
+                mydb = mysql.connector.connect(host="localhost",user="root",password="pava12345S")
+                mycursor=mydb.cursor(buffered=True)
+                mycursor.execute("use Business_Cards")
                 for i, row in df.iterrows():
                     sql = """INSERT INTO Business_Cards(company_name,card_holder,designation,mobile_number,email,website,area,city,state,pin_code,image)
                          VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
-                    cursor.execute(sql, tuple(row))
+                    mycursor.execute(sql, tuple(row))
                     # Commit the changes and close the cursor and connection
                     mydb.commit()
-                    cursor.close()
+                    mycursor.close()
                     mydb.close()
                     st.success("Data uploaded to the database successfully!")
-            except pymysql.connector.Error as error:
+            except mysql.connector.connect.Error as error:
                 st.error(f"Failed to store data in the database: {error}")
         else:
             st.warning("No data to store. Please upload and extract business card data first.")
@@ -250,15 +244,15 @@ if selected == "Modify":
     
     try:
         with column1:
-            cursor.execute("SELECT card_holder FROM Business_Cards")
-            result = cursor.fetchall()
+            mycursor.execute("SELECT card_holder FROM Business_Cards")
+            result = mycursor.fetchall()
             business_cards = {row[0]: row[0] for row in result}
             
             selected_card = st.selectbox("Select a card holder name to update", list(business_cards.keys()))
             st.markdown("#### Modify the Datas")
             
-            cursor.execute("SELECT company_name, card_holder, designation, mobile_number, email, website, area, city, state, pin_code FROM Business_Cards WHERE card_holder=%s", (selected_card,))
-            result = cursor.fetchone()
+            mycursor.execute("SELECT company_name, card_holder, designation, mobile_number, email, website, area, city, state, pin_code FROM Business_Cards WHERE card_holder=%s", (selected_card,))
+            result = mycursor.fetchone()
             
             # DISPLAYING ALL THE INFORMATION
             company_name = st.text_input("Company Name", result[0])
@@ -274,7 +268,7 @@ if selected == "Modify":
 
             if st.button("Commit changes to DB"):
                 # Update the information for the selected business card in the database
-                cursor.execute("""
+                mycursor.execute("""
                     UPDATE Business_Cards
                     SET company_name=%s, card_holder=%s, designation=%s, mobile_number=%s, email=%s, website=%s, area=%s, city=%s, state=%s, pin_code=%s
                     WHERE card_holder=%s
@@ -283,8 +277,8 @@ if selected == "Modify":
                 st.success("New Information updated in the database successfully.")
 
         with column2:
-            cursor.execute("SELECT card_holder FROM Business_Cards")
-            result =cursor.fetchall()
+            mycursor.execute("SELECT card_holder FROM Business_Cards")
+            result =mycursor.fetchall()
             business_cards = {row[0]: row[0] for row in result}
             
             selected_card = st.selectbox("Select a card holder name to delete", list(business_cards.keys()))
@@ -292,13 +286,23 @@ if selected == "Modify":
             st.write("#### Are You Sure")
             
             if st.button("Yes,sure"):
-                cursor.execute(f"DELETE FROM Business_Cards WHERE card_holder='{selected_card}'")
+                mycursor.execute(f"DELETE FROM Business_Cards WHERE card_holder='{selected_card}'")
                 mydb.commit()
                 st.success("Business card information deleted from the database.")
     except:
         st.warning("There is no data available in the database")
 
     if st.button("View updated data"):
-        cursor.execute("SELECT company_name, card_holder, designation, mobile_number, email, website, area, city, state, pin_code FROM Business_Cards")
-        updated_data = pd.DataFrame(cursor.fetchall(), columns=["Company Name", "Card Holder", "Designation", "Mobile Number", "Email", "Website", "Area", "City", "State", "Pin Code"])
+        mycursor.execute("SELECT company_name, card_holder, designation, mobile_number, email, website, area, city, state, pin_code FROM Business_Cards")
+        updated_data = pd.DataFrame(mycursor.fetchall(), columns=["Company Name", "Card Holder", "Designation", "Mobile Number", "Email", "Website", "Area", "City", "State", "Pin Code"])
         st.write(updated_data)
+
+    
+    
+
+
+                        
+                        
+                        
+                         
+
