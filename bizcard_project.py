@@ -297,12 +297,9 @@ if selected == "Modify":
         updated_data = pd.DataFrame(mycursor.fetchall(), columns=["Company Name", "Card Holder", "Designation", "Mobile Number", "Email", "Website", "Area", "City", "State", "Pin Code"])
         st.write(updated_data)
 
-    
-    
-
-
-                        
-                        
+               
+                                
+          
                         
                          
 
